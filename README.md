@@ -143,6 +143,7 @@ Se o modo de exibição atual for Zoomed, ele alterna para Default, restaurando 
 
 Finalmente, chama ApplyChanges() para aplicar as alterações feitas nas dimensões.
 
+
 ### Entities
 
 #### IGameEntity.cs
@@ -154,3 +155,291 @@ Finalmente, chama ApplyChanges() para aplicar as alterações feitas nas dimens�
 * 'voidDraw(SpriteBatchspriteBatch, GameTimegameTime)': Este método representa a lógica para renderizar a entidade no ecrã. Recebe dois parâmetros:
   * 'SpriteBatch': Usado para renderizar gráficos 2D para os objetos.
   * 'GameTime': Como explicado em cima, fornece a informação sobre o tempo do tempo decorrido.
+
+![img](https://i.imgur.com/jV24OOu.png)
+
+#### EntityManager.cs
+
+"Entity Manager" é um componente importante para a organização e manipulação das entidades neste jogo, gerenciado todas as entidades do jogo, permitindo adicionar, remover, atualizar e desenhar entidades de forma eficiente e organizada. Fornecendo uma maneira estruturada de lidar com a lógica e a renderização das entidades do jogo.
+
+Para gerir todas as entidades do jogo, são usados três campos privados, onde são armazenadas entidades para então depois serem usadas nos métodos, "entities" é uma lista que armazena todas as entidades do jogo, "entitiesToAdd" e "_entitiesToRemove" são listas auxiliares usadas para adicionar e remover entidades. 
+
+![img](https://i.imgur.com/44Vd4kz.png)
+
+"Entity Manager" contém seis métodos que ajudam na organização das entidades neste jogo: "Update", "Draw", "AddEntity", "RemoveEntity", "Clear", "GetEntitiesOfType".
+
+* Método "Update": Itera todas as entidades e chama o método 'Update' de cada uma, passando o GameTime como o parâmetro. Remove as entidades que estão na lista "entitiesToRemove". Adiciona as entidades que estão na lista "entitiesToAdd".
+* Método "Draw": Itera todas as entidades e chama o método' Draw' de cada uma, passando o "SpriteBatch" e o "GameTime" como parâmetros.
+
+![img](https://i.imgur.com/yVGD50M.png)
+
+* Métodos "AddEntity" e "RemoveEntity": são usados para adicionar entidades as listas auxiliares para depois serem usadas no "Update" para adicionar e remover, ambos os métodos aceitam apensa entidades não nulas.
+* Método "Clear": Adiciona todas as entidades da lista "entities" à lista "entitiesToRemove" para serem removidas assim limpando o jogo das entidades.
+* Método "GetEntitiesOfType": Retorna todas as entidades de um tipo especificado da lista "_entities".
+
+![img](https://i.imgur.com/I2arC8g.png)
+
+#### TrexState.cs
+
+"TrexState" define um Enum usado para os estados no Trex neste jogo, definindo os diferentes comportamentos possíveis parao TRex, permitindo que o jogo saiba como ele deve se comportar em diferentes situações. O Enum tem: "Idle", "Running", "Jumping", "Ducking", "Falling".
+
+![img](https://i.imgur.com/6IOPIg9.png)
+
+#### Trex.cs
+
+"Trex" defina a classe "Trex", que representa o personagem principal do jogo, contendo as constantes, variedades e métodos que o "Trex" necessita para ser, ou renderizado, ou até para saltar.
+
+Esta classe contém múltiplas Constantes utilizadas para determinar valores relacionados ao personagem, como velocidade de queda, altura mínima do salto, gravidade, entre outros.
+
+Também como as Constantes, existem múltiplas variáveis, sendo tudo preciso para ser usado para renderizar os "Sprites", para os sons que o "Trex" faz quando salta, para as animações que ele faz seja a correr, ou a baixar-se, também guardando a posição inicial, posição atual, velocidade, a ordem de renderização e por final o Estado do "TrexState" é que o "Trex" está.
+
+Métodos:
+
+* "Initialize()": Inicializa o Trex com os valores padrão.
+* "Draw(SpriteBatchspriteBatch, GameTimegameTime)": Usado para renderizar o T-Rex no ecrã com base no estado atual.
+
+![img](https://i.imgur.com/73dlKL3.png)
+
+* "Update(GameTimegameTime)": Atualiza a lógica do Trex com base no estado atual e no tempo decorrido.
+* "BeginJump()", "CancelJump()", "Duck()", "GetUp()", "Drop()": Métodos para iniciar o salto, cancelar o salto, agachar, levantar e cair, respetivamente.
+
+![img](https://i.imgur.com/hvTCXrb.png)
+
+* "Die()": Faz o Trex morrer, alterando o seu estado e sinalizando o evento 'Died'.
+
+![img](https://i.imgur.com/MINEPOc.pnghttps://i.imgur.com/MINEPOc.png)
+
+#### ICollidable
+
+"ICollidable" é uma "interface" usada para representar objetos que podem colidir com outros objetos no jogo, contendo uma única propriedade, "CollisionBox", sendo uma propriedade de apenas leitura do tipo "Rectagle", que representa a área de colisão neste jogo.
+
+![img](https://i.imgur.com/8mS6xvR.png)
+
+#### ScoreBoard
+
+"ScoreBoard" implementa uma classe chamada "ScoreBoard" que representa o "ScoreBoard" do jogo, contendo múltiplas Constantes, Variáveis e Métodos para que a "ScoreBoard" funcione como é desejada.
+
+As Constantes guardam valores que não podem ser mudados, como as coordenadas onde a "ScoreBoard" está no ecrã, a quantidade de dígitos que a "ScoreBoard" pode ter, seguindo do valor máximo que a "ScoreBoard" pode ter e entre outras Constantes.
+
+As Variáveis não são tantas quanto as Constantes, mas ainda sendo precisas algumas para que a classe funcione, como o "Score" que é a pontuação atual do jogo, "DisplayScore" a pontuação atual a ser exibida na "ScoreBoard", "HighScore" a pontuação máxima alcançada, "HasHighScore" indica se existe uma pontuação máxima definida, "DrawOrder" como explicado anteriormente é a ordem de renderização e por final a "Position" que é a posição da "ScoreBoard" no ecrã.
+
+Os Métodos:
+
+* "Draw", renderiza a "ScoreBoard" no ecrã, incluindo a pontuação atual e, se houver, a pontuação máxima.
+* "Update", atualiza a "ScoreBoard" ao longo do tempo, aumento a pontuação com base na velocidade do "Trex". Também controla a animação de flash quando a pontuação atinge um novo centésimo.
+
+![img](https://i.imgur.com/i8GAjg0.png)
+
+* "SplitDigits", divide um número inteiro em seus dígitos individuais.
+* "GetDigitTextureBounds", obtém os limites da textura para um dígito específico com base em sua posição no sprite.
+
+![img](https://i.imgur.com/i8GAjg0.png)
+
+#### Obstacle
+
+"Obstacle" define uma classe abstrata chamada "Obstacle" que representa os obstáculos no jogo.
+
+Variáveis, esta classe contém quatro variáveis, "_trex" uma referência ao objecto "Trex", "CollisionBox" é uma propriedade abstrata que representa a caixa de colisão do obstáculo, "DrawOrder", "Position" uma variável protegida que indicada a posição do obstáculo no ecrã.
+
+No Construtor, ele receber dois parâmetros uma referência ao objeto "Trex" e a sua posição atual.
+
+Nos Métodos existe o "Draw", um método abstrato para renderizar o obstáculo na tela, o "Update", que atualiza a posição do obstáculo com base na velocidade do "Trex", além disso verifica se houve colisão entre o obstáculo e o "Trex", e para acabar o "CheckCollision", um método privado que verifica se houve colisão entre o obstáculo e o "Trex". Se houver, chama o método "Die()" do "Trex", indicando que o jogador perdeu o jogo.
+
+![img](https://i.imgur.com/d4IWpH6.png)
+
+#### ObstacleManager.cs
+
+"ObstacleManager" implementa um gerenciador de obstáculos para o jogo, e é responsável por gerenciar a criação e remoção de obstáculos durante o jogo, garantido que eles apareçam de acordo com a progressão do jogador e as regras de spawn definidas.
+
+As Variáveis desta classe armazenam múltiplas coisas que vão ser usadas para que a classe funcione, como a última pontuação em que um obstáculo for gerado, a distância entre obstáculos,referênciasao "EntityManager", ao "Trex", à "ScoreBoard", e múltiplos "bool" para ativar ou desativar os gerenciadores.
+
+No construtor recebe-se um "EntityManager", "Trex", "ScoreBoard" e "SpriteSheet" para então utilizar estas variáveis recebidas nos métodos desta classe.
+
+![img](https://i.imgur.com/lTxbojE.png)
+
+Os Métodos desta classe, são o "Draw", "Update", "SpawRandomObstacle" e "Reset".
+
+* "Update" atualiza o gerenciador de obstáculos e verifica se é possível gerar novos obstáculos e remove os existentes conforme necessário.
+
+![img](https://i.imgur.com/8Ku0HSg.png)
+
+* "SpawnRandomObstacle" gera um obstáculo aleatório com base numa determinada taxa de spawn, podendo gerar grupos de Cactos ou Dinossauros Voadores.
+
+![img](https://i.imgur.com/3dPbToN.png)
+
+* "Reset" que limpa todos os obstáculos existentes e redefina as variáveis internas do gerenciados de obstáculos.
+
+![img](https://i.imgur.com/ABYUIw6.png)
+
+#### Flying Dino
+
+"FlyingDino" implementa a classe "FlyingDino" que representa um obstáculo no jogo, representando um dinossauro voador e controla a sua animação e movimento na tela. Também possui funcionalidades para lidar com colisões com o jogador ("Trex").
+
+![img](https://i.imgur.com/3ph66my.png)
+
+#### CactusGroup.cs
+
+"CactusGroup" implementa a classe "CactusGroup", que representa um grupo de cactos como um obstáculo no jogo, criando e desenhando um grupo de cactos com base no tamanho especificado e na textura do sprite sheet fornecida. Também possui funcionalidades para lidar com colisões com o jogador (“Trex”).
+
+![img](https://i.imgur.com/QWwsAyv.png)
+
+#### IDayNightCycle.cs
+
+"IDayNightCycle" define uma interface chamade "IDayNightCycle", que relaciona o ciclo de dia e noite no jogo, fornecendo uma maneira de gerenciar e consultar informações sobre o ciclo de dia e noite no jogo, contendo um inteiro "NightCount", que retorna o númeor de ciclos noturnos que ocorreram, um "boolean" "IsNight", que retorna o valor "True" se estiver de noite e "False" se estiver de dia, e uma cor "ClearColor", para a cor de fundo.
+
+![img](https://i.imgur.com/lISXbsp.png)
+
+#### SkyObject.cs
+
+"SkyObject" define uma classe abstrata chamada "SkyObject", que representam os objetos no céu do jogo, contendo o "Trex", o "DrawOrder", a "Velocidade" e a "Position", contêm um construtor que é usado para definir o "Trex" e a "Position".
+
+Depois contêm dois Métodos o "Draw" e o "Update", um método abstrato e um virtual, respetivamente, o "Update" atualiza a posição do objeto devido a Velocidade e se o "Trex" aidna estiver vivo.
+
+![img](https://i.imgur.com/agSwVAe.png)
+
+#### Star.cs e Moon.cs
+
+"Star" e "Moon" definem duas classes "Star" e "Moon", respetivamente, que representam uma estrela e uma lua no céu do jogo, controlando as suas animações e as suas renderizações, garantindo que elas sejam visíveis apenas durante a noite e que suas animações sejam atualizadas apenas quando o** "Trex" estiver vivo.
+
+![img](https://i.imgur.com/wq2POMF.png)
+
+![img](https://i.imgur.com/KcVyLBQ.png)
+
+#### Cloud.cs
+
+"Cloud" define a classe "Cloud", que representa uma nuvem no céu do jogo, como a "Star" e a "Moon", controla a sua animação e renderização, mas este objeto aparece durante o dia e a noite, não ficando preso à noite.
+
+![img](https://i.imgur.com/QQoUs42.png)
+
+#### SkyManager.cs
+
+"SkyManager" define a classe "SkyManager", que é responsável por gerenciar os objetos no céu do jogo, como nuvens, estrelas e a transição entre o dia e a noite, sendo uma parte crucial no sistema do fundo do jogo, controlando elementos visuais do céu e a transição entre o dia e anoite com base no progresso do jogador.
+
+Contêm múltiplas constantes que guardam as "DrawOrder" dos objetos, as posições máximas e mínimas de cada, e a distância máxima entre eles, com o Score de quando o tempo muda para noite, e quando tempo ela fica assim**.**
+
+Contêm também algumas varáveis, principalmente referencias para os gerenciadores como "EntityManager", "Trex", "ScoreBoard", para serem usados auxiliando a renderização dos objetos no céu.
+
+![img](https://i.imgur.com/ioJvarQ.png)
+
+![img](https://i.imgur.com/WZyKMbX.png)
+
+Os Métodos contêm um construtor para que o SkyManager consiga receber tudo o que precisa quando é ativado, o "Draw", "Update", "TrasitionToNighTime", "TrasitionToDayTime", "HandleCloudSpawning", "HandleStarSpawning" e "UpdateTrasition", que são responsáveis pela rederização dos objetos do céu, atualizar o estado o SkyManager, iniciar e terminar a transição entre o dia e anoite, gerenciar o spawn das nuvens e estrelas, e atualizar a transição entre o dia e a noite, respetivamente.
+
+![img](https://i.imgur.com/A0QJ4HA.png)
+
+#### GameOverScreen.cs
+
+"GameOverScreen" defina a classe "GameOverScreen" que representa a tela do jogo quando o jogo terminar e permite que o jogador reinicie o jogo.
+
+Com constantes para definir a posição do botão para reiniciar o jogo e a de "Game_Over" e o tamanho delas. Com variáveis para definir a sua "DrawOrder" e se está a aparecer ou não, sendo usadas para renderizar e atualizar conforme necessário. Contendo um construtor para conseguir usar a textura do "Game_Over" e a textura do butão.
+
+![img](https://i.imgur.com/MEKOZIS.png)
+
+Contendo dois métodos, o "Draw" e o "Update", uma para renderizar o ecrã para o fim do jogo, renderizando o "GameOver" e o botão para reiniciar o jogo, e o outro para atualizar o ecrã, e verifica se o botão de reinício foi pressionado e em caso de sim chama o "Replay()" do jogo, respetivamente.
+
+![img](https://i.imgur.com/oV7nA2e.png)
+
+
+### Extensions
+
+#### Texture2DExt.cs
+
+Este código define uma classe estática chamada Texture2DExt, que contém um método de extensão para a classe Texture2D. O método de extensão InvertColors permite inverter as cores de uma textura 2D.
+
+1. Este método estende a classe Texture2D, o que significa que agora ele pode ser chamado em instâncias de Texture2D.Dentro do método, ele verifica se a textura fornecida é nula. Se sim, lança uma exceção.
+
+![img](https://i.imgur.com/FTvYJM0.png)
+
+Em seguida, cria uma textura 2D chamada result com as mesmas dimensões da textura original. Em seguida, inverte as cores de cada pixel. Se excludeColor for fornecida e um pixel na textura original corresponder a essa cor, ele mantém o pixel inalterado. Caso contrário, inverte a cor do pixel.
+
+Por fim, os dados de pixel invertidos são definidos na textura resultante usando o método SetData, e a textura resultante é retornada.
+
+
+### Graphics
+
+#### Sprite.cs
+
+Este código tem como propriedades a texture que representa a textura do sprite, x e y que representam as coordenadas, width e height que representam a largura e altura do sprite respetivamente e tintcolor que representa a cor.
+
+Possui um construtor que recebe como argumentos a textura do sprite, as coordenadas X e Y na textura e as dimensões Width e Height.
+
+Possui ainda o método Draw que desenha o sprite na tela utilizando spritebatch e vector2 para especificar onde o sprite vai ser desenhado.
+
+É passado como parâmetros a textura, a posição, um retângulo onde são passadas a altura, largura, bem como o X e Y onde vai ser desenhado e a sua cor.
+
+![img](https://i.imgur.com/IfFPeKb.png)
+
+#### SpriteAnimationFrame.cs
+
+Este código define uma classe que representa um quadro de animação de um sprite.
+
+Tem um campo que armazena o sprite e propriedades que fornecem o acesso a esse sprite e outra que armazena a data e hora de um frame.
+
+Tem um construtor que recebe um objeto Sprite e um valor de dta/hora do frame e faz a iniciação das propriedades da classe.
+
+![img](https://i.imgur.com/opR5V1B.png)
+
+#### SpriteAnimation.cs
+
+Este código define uma classe que representa uma animação de sprites composta por vários quadros.
+
+Tem um campo que representa os frames da animação e propriedades que retornam o número total de frames e outra que retorna o frame atual.
+
+Tem ainda um index que permite ter acesso a um frame específico da animação e um método que retorna esse frame.
+
+De maneira a facilitar a manipulação de animações esta classe permite o acesso aos frames individuais e ao frame atual com base no progresso de reprodução.
+
+![img](https://i.imgur.com/GLUncis.png)
+
+A propriedade Duration calcula e retorna a duração total da animação. Primeiro, verifica se a lista de frames não está vazia e se não estiver vazia retorna o valor máximo de data/hora entre todos os frames na lista.
+
+A seguir temos variáveis que indicam se a animação está em reprodução, que controlam o progresso atual da reprodução da animação e que propriedade indicam se a animação deve ser repetida.
+
+Posto isto temos um método que é usado para adicionar um novo quadro à animação.
+
+![img](https://i.imgur.com/IgpKd0l.png)
+
+O primeiro método é usado para atualizar o estado da animação.
+
+Se a animação estiver em reprodução o progresso da reprodução é atualizado. Em seguida, verifica-se se o progresso da reprodução excedeu a duração total da animação. Se isso acontecer e a animação deve ser repetida, caso contrário, a reprodução é interrompida.
+
+O segundo método é usado para desenhar o quadro atual da animação na tela.
+
+Obtém o quadro atual da animação. Se o quadro não for nulo, desenha o sprite.
+
+O terceiro método inicia a reprodução da animação.
+
+O último método interrompe a reprodução da animação.
+
+Juntos, estes métodos permitem controlar quando e como uma animação de sprite é reproduzida e desenhada no jogo.
+
+![img](https://i.imgur.com/GF69RIr.png)
+
+O primeiro método retorna o frame da animação localizado no índice especificado. Primeiro verifica se o índice fornecido está dentro dos limites válidos dos quadros da animação. Se não estiver, ele lança uma exceção e em seguida, retorna o quadro correspondente ao índice.
+
+O segundo método limpa todos os frames da animação e interrompe qualquer reprodução em andamento.
+
+O terceiro é um método usado para criar uma animação de sprite simples.
+
+Recebe como entrada uma textura, a posição inicial do sprite, a largura e altura do sprite, o deslocamento entre os sprites adjacentes, o número total de quadros na animação e a duração de cada quadro em segundos.
+
+![img](https://i.imgur.com/5Ay3J06.png)
+
+
+### System
+
+#### InputController.cs
+
+O InputController é responsável pelos controlos do jogador.
+
+Possui três campos que representam o player e armezenam o estados do teclado na iteração anterior.
+
+Tem dois metodos onde o primeiro é chamado a cada quadro e verifica se a tecla de salto foi pressionada, se sim e o player não estiver atualmente a saltar, chama o método para iniciar o salto. Se o player estiver a saltar e a tecla de salto não estiver a ser pressionada, chama o método que interromper o salto.
+
+Se a tecla para abaixar for pressionada enquanto o player estiver a saltar ou a cair, chama o método para cair rapidamente, caso contrário, chama o método para agachar.
+
+Caso o player esteja agachado e a tecla de abaixar não estiver a ser pressionada, chama o método para levantar o player.
+
+O segundo método é usado para bloquear temporariamente as entradas.
+
+![img](https://i.imgur.com/hVmKvrr.png)
