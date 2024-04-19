@@ -2,7 +2,7 @@
 
 Este jogo foi feito por [Yeti47](https://github.com/Yeti47).
 
-Trabalho de Tecnologias em Desenvolvimento de VideoJogos.
+Trabalho de Tecnologias de Desenvolvimento de VideoJogos.
 
 Feito por João Antunes, a23478 e João Freitas, a23475.
 
