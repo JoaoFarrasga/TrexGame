@@ -133,7 +133,6 @@ Se ocorrer algum erro durante esse processo, uma exceção será lançada e o er
 
 ![img](https://i.imgur.com/uEHl2QW.png)
 
-
 Estes métodos são responsáveis por alterar o estado do jogo em relação à exibição e ao estado do highscore.
 
 1. O primeiro método redefine o highscore para zero e a data do highscore para o valor padrão de DateTime, em seguida, chama o método SaveGame() para guardar essas alterações.
@@ -142,7 +141,6 @@ Estes métodos são responsáveis por alterar o estado do jogo em relação à e
 Se o modo de exibição atual for Zoomed, ele alterna para Default, restaurando as dimensões do buffer e redefine a matriz de transformação para a identidade.
 
 Finalmente, chama ApplyChanges() para aplicar as alterações feitas nas dimensões.
-
 
 ### Entities
 
@@ -162,7 +160,7 @@ Finalmente, chama ApplyChanges() para aplicar as alterações feitas nas dimens�
 
 "Entity Manager" é um componente importante para a organização e manipulação das entidades neste jogo, gerenciado todas as entidades do jogo, permitindo adicionar, remover, atualizar e desenhar entidades de forma eficiente e organizada. Fornecendo uma maneira estruturada de lidar com a lógica e a renderização das entidades do jogo.
 
-Para gerir todas as entidades do jogo, são usados três campos privados, onde são armazenadas entidades para então depois serem usadas nos métodos, "entities" é uma lista que armazena todas as entidades do jogo, "entitiesToAdd" e "_entitiesToRemove" são listas auxiliares usadas para adicionar e remover entidades. 
+Para gerir todas as entidades do jogo, são usados três campos privados, onde são armazenadas entidades para então depois serem usadas nos métodos, "entities" é uma lista que armazena todas as entidades do jogo, "entitiesToAdd" e "_entitiesToRemove" são listas auxiliares usadas para adicionar e remover entidades.
 
 ![img](https://i.imgur.com/44Vd4kz.png)
 
@@ -339,6 +337,31 @@ Contendo dois métodos, o "Draw" e o "Update", uma para renderizar o ecrã para 
 
 ![img](https://i.imgur.com/oV7nA2e.png)
 
+#### GroundTile.cs
+
+"GroundTile" define uma classe chamada "GroundTile" que implementa a interface, documentada acima, "IGameEntity".
+
+Contendo quatro propriedades, uma privada que armazena a posição Y do Tile, seguida da posição X, Sprite e DrawOrder, para acessar e definir cada uma com a posição X do Tile, o Sprite associado ao Tile e como explicado anteriormente para definir a ordem para os Tiles serem Renderizados.
+
+Segue com um construtor, para definir essas propriedades, com o Update e o Draw.
+
+![img](https://i.imgur.com/ZkLuP2R.png)
+
+#### GroundManager.cs
+
+O "GroundManager" é responsável por gerenciar os tiles do chão neste Jogo. Ele utiliza uma lista de "GroundTile", como explicado em cima, para rastrear os tiles Atuais, seguido com mais duas listas uma para remover e uma para adicionar, com isso esta class trata completamente dos Tiles.
+
+Contendo as mesmas constantes que todas as outras entidades têm, as constantes que guardam em que posição da spritesheet está o sprite desejado.
+
+Tem o DrawOrder como todos os outros para definir a ordem da renderização no jogo.
+
+Segue um construtor que recebe os parâmetros que o Manager precisa para funcionar, com um Update que é responsável por atualizar o GroundManager com base no tempo, Verificando se existem tiles no chão e, se o tile que está mais à direita estiver fora da tela, removendo esse e adicionando um novo à esquerda, e por final atualiza os tiles existententes com a rapidez do Trex.
+
+![img](https://i.imgur.com/PmZxmmg.png)
+
+Contem quatro funções, o Initialize que limpa as listas dos tiles existentes, e começa por criar um tile novo na posição 0, o CreateRegularTile que cria um tile com o sprite normal, o CreateBumpyTile que cria um tile com o sprite diferente, e por final o SpawnTile que gera um tile nova numa posição especificada.
+
+![img](https://i.imgur.com/Or5xS5P.png)
 
 ### Extensions
 
@@ -353,7 +376,6 @@ Este código define uma classe estática chamada Texture2DExt, que contém um m�
 Em seguida, cria uma textura 2D chamada result com as mesmas dimensões da textura original. Em seguida, inverte as cores de cada pixel. Se excludeColor for fornecida e um pixel na textura original corresponder a essa cor, ele mantém o pixel inalterado. Caso contrário, inverte a cor do pixel.
 
 Por fim, os dados de pixel invertidos são definidos na textura resultante usando o método SetData, e a textura resultante é retornada.
-
 
 ### Graphics
 
@@ -424,7 +446,6 @@ O terceiro é um método usado para criar uma animação de sprite simples.
 Recebe como entrada uma textura, a posição inicial do sprite, a largura e altura do sprite, o deslocamento entre os sprites adjacentes, o número total de quadros na animação e a duração de cada quadro em segundos.
 
 ![img](https://i.imgur.com/5Ay3J06.png)
-
 
 ### System
 
